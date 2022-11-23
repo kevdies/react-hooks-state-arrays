@@ -11,6 +11,7 @@ function SpicyFoodList() {
     setFoods(newFoodArray);
   }
 
+  const [food, removeFood ] = useState()
   function handleClick(food) {
 
   }
