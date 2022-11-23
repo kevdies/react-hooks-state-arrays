@@ -3,6 +3,7 @@ import { spicyFoods, getNewRandomSpicyFood } from "../data";
 
 function SpicyFoodList() {
   const [foods, setFoods] = useState(spicyFoods);
+  const [filterBy, setFilterBy] = useState("All");//we never use setFilterBy because ???
   // console.log(spicyFoods);
   function handleAddFood() {
     const newFood = getNewRandomSpicyFood();
@@ -11,13 +12,31 @@ function SpicyFoodList() {
     setFoods(newFoodArray);
   }
 
-
-    function handleListClick(id) {
-      const newFoodArray = foods.filter((food) => food.id !== id);
-      setFoods(newFoodArray);
+  const foodsToDisplay = foods.filter((food) => {
+    if (filterBy === "All") {
+      return true;
+//this is a way to make new foodsToDisplay a copy of all foods by comparing a KNOWN filterBy IS set to "All"
     }
-  
-  const foodList = foods.map((food) => (
+    else {
+      return food.cuisine === filterBy;
+    }
+  })
+
+  function handleListClick(id) {
+    const newFoodArray = foods.map((food) => {
+      if (food.id === id) {
+        return {
+          ...food,
+          heatLevel: food.heatLevel + 1,
+        };
+      } else {
+        return food;
+      }
+    });
+    setFoods(newFoodArray);
+  }
+
+  const foodList = foodsToDisplay.map((food) => (
     <li key={food.id} onClick={ () => handleListClick(food.id)}>
       {food.name} | Heat: {food.heatLevel} | Cuisine: {food.cuisine}
     </li>
@@ -29,6 +48,16 @@ function SpicyFoodList() {
       <ul>{foodList}</ul>
     </div>
   );
+
+  return (
+    <select name="filter">
+      <option value="All">All</option>
+      <option value="American">American</option>
+      <option value="Sichuan">Sichuan</option>
+      <option value="Thai">Thai</option>
+      <option value="Mexican">Mexican</option>
+    </select>
+  )
 }
 
 export default SpicyFoodList;
