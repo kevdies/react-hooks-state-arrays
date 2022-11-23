@@ -3,14 +3,20 @@ import { spicyFoods, getNewRandomSpicyFood } from "../data";
 
 function SpicyFoodList() {
   const [foods, setFoods] = useState(spicyFoods);
-
+  // console.log(spicyFoods);
   function handleAddFood() {
     const newFood = getNewRandomSpicyFood();
-    console.log(newFood);
+    // console.log(newFood);
+    const newFoodArray = [...foods, newFood];
+    setFoods(newFoodArray);
+  }
+
+  function handleClick(food) {
+
   }
 
   const foodList = foods.map((food) => (
-    <li key={food.id}>
+    <li key={food.id} onClick={ () => handleClick(food.id)}>
       {food.name} | Heat: {food.heatLevel} | Cuisine: {food.cuisine}
     </li>
   ));
